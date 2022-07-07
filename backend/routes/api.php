@@ -3,12 +3,6 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-if (!headers_sent()) {
-    header('Access-Control-Allow-Origin: *');
-    header('Access-Control-Allow-Methods: *');
-    header('Access-Control-Allow-Headers: Origin, X-Requested-With,Authorization, Content-Type, Accept');
-}
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -29,4 +23,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/post', 'PostController@create')->name('posts.create');
 
     Route::get('/user', 'UserController@index');
+    Route::get('/user/posts', 'UserController@posts');
 });

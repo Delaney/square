@@ -15,11 +15,11 @@ class PostRepository implements PostRepositoryInterface
 {
     public function getAllPosts($request)
     {
-        \Log::debug($request->all());
         $per_page = $request->input('per_page', 10);
+        $order = $request->input('order_by', 'desc');
         $query = $request->input("query");
 
-        $builder = Post::query($query);
+        $builder = Post::query($query)->orderBy('publication_date', $order);
 
         return PostResource::collection($builder->paginate($per_page));
     }

@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Http\Resources\Post;
 use App\Interfaces\UserRepositoryInterface;
 use Illuminate\Support\Facades\{
     Auth,
@@ -82,5 +83,11 @@ class UserRepository implements UserRepositoryInterface
     public function getUserDetails($request)
     {
         return new UserResource($request->user());
+    }
+
+    public function getUserPosts($request)
+    {
+        $user = $request->user();
+        return Post::collection($user->posts);
     }
 }

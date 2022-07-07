@@ -19,4 +19,9 @@ class UserController extends Controller
     {
         return $this->userRepository->getUserDetails($request);
     }
+
+    public function posts(Request $request)
+    {
+        return $this->userRepository->getUserPosts($request);
+    }
 }
