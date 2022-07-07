@@ -3,6 +3,12 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+if (!headers_sent()) {
+    header('Access-Control-Allow-Origin: *');
+    header('Access-Control-Allow-Methods: *');
+    header('Access-Control-Allow-Headers: Origin, X-Requested-With,Authorization, Content-Type, Accept');
+}
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -14,6 +20,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::post('/register', 'AuthController@register')->name('register');
+Route::post('/login', 'AuthController@login')->name('login');
+
+Route::get('/posts', 'PostController@index')->name('posts');
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/posts/{id}', 'PostController@show')->name('posts.show');
+    Route::post('/post', 'PostController@create')->name('posts.create');
+
+    Route::get('/user', 'UserController@index');
 });
