@@ -41,22 +41,16 @@ export default new Vuex.Store({
                     });
             }
         },
-        async getPosts({ state }) {
-            await new APIService().getPosts().then((posts) => {
-                posts.data.forEach((doc) => {
-                    if (!state.blogPosts.some((post) => post.id === doc.id)) {
-                        const data = {
-                            id: doc.id,
-                            title: doc.title,
-                            description: doc.description,
-                            publication_date: doc.publication_date,
-                            user_id: doc.user_id,
-                        };
-                        state.blogPosts.push(data);
-                    }
-                });
-            });
-            state.postLoaded = true;
+        async register({ commit }, User) {
+            await axios
+                .post("api/register", User)
+                .then((response) => response.data)
+                .then((data) => {
+                    commit("setUser", data);
+                    localStorage.setItem('token', data.access_token);
+                    return data;
+                })
+                .catch((error) => error);
         },
         async login({ commit }, User) {
             await axios
@@ -74,25 +68,6 @@ export default new Vuex.Store({
             localStorage.removeItem('token');
             commit("setUser", user);
         },
-
-        // async updatePost({ commit, dispatch }, payload) {
-        //     commit("filterBlogPost", payload);
-        //     await dispatch("getPost");
-        // },
-        // async deletePost({ commit }, payload) {
-        //     const getPost = await db.collection("blogPosts").doc(payload);
-        //     await getPost.delete();
-        //     commit("filterBlogPost", payload);
-        // },
-        // async updateUserSettings({ commit, state }) {
-        //     const dataBase = await db.collection("users").doc(state.profileId);
-        //     await dataBase.update({
-        //         firstName: state.profileFirstName,
-        //         lastName: state.profileLastName,
-        //         username: state.profileUsername,
-        //     });
-        //     commit("setProfileInitials");
-        // },
     },
     modules: {},
 });
