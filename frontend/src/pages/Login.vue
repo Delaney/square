@@ -4,7 +4,7 @@
             <h3>LOGIN</h3>
             <form
                 @submit.prevent="submit"
-                style="width: 500px; margin: 0 auto 200px; border: black"
+                style="width: 500px; margin: 0 auto 50px; border: black"
             >
                 <div class="row" style="margin-top: 30px;">
                     <label class="col-4" for="email">Email:</label>
@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
     name: "Login",
     components: {},
@@ -52,12 +53,18 @@ export default {
             user.append("email", this.form.email);
             user.append("password", this.form.password);
             try {
-                this.$store.dispatch("login", user).then(() => {
-                    setTimeout(() => {
-                        this.$router.push("/dashboard");
-                        this.showError = false;
-                    }, 1000);
-                });
+                axios
+                    .post("api/login", user)
+                    .then((data) => {
+                        if (data) {
+                            this.$store.commit("setUser", data.data);
+                            localStorage.setItem('token', data.data.access_token);
+                            this.$router.push("/dashboard");
+                            this.showError = false;
+                        } else {
+                            this.showError = true;
+                        }
+                    });
             } catch (error) {
                 this.showError = true;
             }

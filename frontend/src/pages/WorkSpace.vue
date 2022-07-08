@@ -95,9 +95,12 @@ export default {
     },
     methods: {
         async getPosts() {
+            const token = localStorage.getItem("token");
             await axios
                 .get("/api/user/posts", {
-                    headers: this.$store.getters["headers"],
+                    headers: {
+                        "Authorization" : `Bearer ${token}`
+                    },
                 })
                 .then((response) => response.data)
                 .then((data) => (this.posts = data));
@@ -132,6 +135,7 @@ export default {
             else this.showModal();
         },
         createPost() {
+            const token = localStorage.getItem("token");
             const { title, description } = this.post;
             if (title && description) {
                 axios.post(
@@ -141,7 +145,9 @@ export default {
                         description,
                     },
                     {
-                        headers: this.$store.getters["headers"],
+                        headers: {
+                            "Authorization" : `Bearer ${token}`
+                        },
                     }
                 )
                 .then(response => response.data)

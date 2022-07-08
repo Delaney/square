@@ -58,6 +58,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
     name: "Login",
     components: {},
@@ -80,11 +81,16 @@ export default {
             user.append("name", this.form.name);
             user.append("username", this.form.username);
             try {
-                this.$store.dispatch("register", user);
-                setTimeout(() => {
-                    this.$router.push("/dashboard");
-                    this.showError = false;
-                }, 1000);
+                axios
+                    .post("api/register", user)
+                    .then((data) => {
+                        if (data) {
+                            this.$store.commit("setUser", data.data);
+                            localStorage.setItem('token', data.data.access_token);
+                            this.$router.push("/dashboard");
+                            this.showError = false;
+                        }
+                    });
             } catch (error) {
                 this.showError = true;
             }

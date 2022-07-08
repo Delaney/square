@@ -18,8 +18,9 @@ Route::post('/register', 'AuthController@register')->name('register');
 Route::post('/login', 'AuthController@login')->name('login');
 
 Route::get('/posts', 'PostController@index')->name('posts');
+Route::get('/posts/{id}', 'PostController@show')->name('posts.show');
+
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/posts/{id}', 'PostController@show')->name('posts.show');
     Route::post('/post', 'PostController@create')->name('posts.create');
 
     Route::get('/user', 'UserController@index');

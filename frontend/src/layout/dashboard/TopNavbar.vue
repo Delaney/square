@@ -18,7 +18,7 @@
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav ml-auto" v-if="isLoggedIn">
                     <li class="nav-item">
-                        <a @click="logout" class="nav-link">
+                        <a @click="logout" class="nav-link" style="cursor: pointer">
                             <p>Logout</p>
                         </a>
                     </li>
@@ -55,7 +55,8 @@ export default {
             return "";
         },
         isLoggedIn() {
-            return this.$store.getters.isAuthenticated;
+            const token = localStorage.getItem("token");
+            return !!token;
         },
     },
     data() {
@@ -80,7 +81,7 @@ export default {
             this.$sidebar.displaySidebar(false);
         },
         async logout() {
-            await this.$store.dispatch("logout");
+            this.$store.dispatch("logout");
             this.$router.push("/login");
         },
     },

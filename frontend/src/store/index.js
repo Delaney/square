@@ -46,11 +46,11 @@ export default new Vuex.Store({
                 .post("api/register", User)
                 .then((response) => response.data)
                 .then((data) => {
-                    commit("setUser", data);
+                    
                     localStorage.setItem('token', data.access_token);
                     return data;
-                })
-                .catch((error) => error);
+                });
+            await commit("setUser", data);
         },
         async login({ commit }, User) {
             await axios
@@ -61,11 +61,12 @@ export default new Vuex.Store({
                     localStorage.setItem('token', data.access_token);
                     return data;
                 })
-                .catch((error) => error);
+                .catch(error => {throw error});
+            await commit('setUser', data);
         },
         async logout({ commit }) {
             let user = null;
-            localStorage.removeItem('token');
+            localStorage.removeItem("token");
             commit("setUser", user);
         },
     },
