@@ -16,7 +16,7 @@ export default new Vuex.Store({
         blogPostsCards(state) {
             return state.blogPosts.slice(2, 6);
         },
-        isAuthenticated: (state) => !!state.user,
+        isAuthenticated: (state) => !!localStorage.getItem("token"),
         headers: () => {
             const token = localStorage.getItem("token");
             return {"Authorization" : `Bearer ${token}`};
@@ -40,10 +40,6 @@ export default new Vuex.Store({
                         commit("updateUser", data);
                     });
             }
-        },
-        async logout({}) {
-            localStorage.removeItem("token");
-            this.commit("updateUser", {});
         },
         async getPosts({ state }) {
             await new APIService().getPosts().then((posts) => {
@@ -73,10 +69,10 @@ export default new Vuex.Store({
                 })
                 .catch((error) => error);
         },
-        async LogOut({ commit }) {
+        async logout({ commit }) {
             let user = null;
             localStorage.removeItem('token');
-            commit("logout", user);
+            commit("setUser", user);
         },
 
         // async updatePost({ commit, dispatch }, payload) {

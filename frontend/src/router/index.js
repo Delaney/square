@@ -11,28 +11,28 @@ const router = new VueRouter({
     linkActiveClass: "active",
 });
 
-// router.beforeEach((to, from, next) => {
-//     if (to.matched.some((record) => record.meta.requiresAuth)) {
-//         if (store.getters.isAuthenticated) {
-//             next();
-//             return;
-//         }
-//         next("/login");
-//     } else {
-//         next();
-//     }
-// });
+router.beforeEach((to, from, next) => {
+    const loggedIn = localStorage.getItem("token");
+    if (to.matched.some((record) => record.meta.requiresAuth)) {
+        if (loggedIn) {
+            return next();
+        }
+        return next("/login");
+    } else {
+        next();
+    }
+});
 
-// router.beforeEach((to, from, next) => {
-//     if (to.matched.some((record) => record.meta.guest)) {
-//         if (store.getters.isAuthenticated) {
-//             next("/posts");
-//             return;
-//         }
-//         next();
-//     } else {
-//         next();
-//     }
-// });
+router.beforeEach((to, from, next) => {
+    const loggedIn = localStorage.getItem("token");
+    if (to.matched.some((record) => record.meta.guest)) {
+        if (loggedIn) {
+            return next("/dashboard");
+        }
+        return next();
+    } else {
+        next();
+    }
+});
 
 export default router;

@@ -19,40 +19,44 @@ const routes = [
         children: [
             {
                 path: "",
-                name: "dashboard",
+                name: "posts",
                 component: Dashboard,
             },
-
+            // {
+            //     path: "stats",
+            //     name: "stats",
+            //     component: UserProfile,
+            // },
+            // {
+            //     path: "notifications",
+            //     name: "notifications",
+            //     component: Notifications,
+            // },
+            // {
+            //     path: "icons",
+            //     name: "icons",
+            //     component: Icons,
+            // },
+            // {
+            //   path: "maps",
+            //   name: "maps",
+            //   component: Maps
+            // },
+            // {
+            //     path: "questionnaire",
+            //     name: "questionnaire",
+            //     component: Typography,
+            // },
+            // {
+            //     path: "table-list",
+            //     name: "table-list",
+            //     component: WorkSpace,
+            // },
             {
-                path: "stats",
-                name: "stats",
-                component: UserProfile,
-            },
-            {
-                path: "notifications",
-                name: "notifications",
-                component: Notifications,
-            },
-            {
-                path: "icons",
-                name: "icons",
-                component: Icons,
-            },
-            {
-              path: "maps",
-              name: "maps",
-              component: Maps
-            },
-            {
-                path: "questionnaire",
-                name: "questionnaire",
-                component: Typography,
-            },
-            {
-                path: "table-list",
-                name: "table-list",
-                component: WorkSpace,
-            },
+                path: "post/:id",
+                name: "post",
+                component: Typography
+            }
         ],
     },
     {
@@ -68,8 +72,8 @@ const routes = [
         meta: { guest: true },
     },
     {
-        path: "/posts",
-        name: "posts",
+        path: "/dashboard",
+        name: "dashboardLayout",
         component: DashboardLayout,
         meta: {requiresAuth: true},
         children: [

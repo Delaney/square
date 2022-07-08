@@ -1,7 +1,7 @@
 <template>
     <div>
         <!--Stats cards-->
-        <div style="display: flex; justify-content: space-between">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
             <select
                 name="sort"
                 id=""
@@ -12,7 +12,7 @@
                 <option value="asc">Earliest</option>
             </select>
 
-            <button class="button" @click="toggleModal">Create Post</button>
+            <button class="btn-round btn-info" style="padding: 10px 30px;" @click="toggleModal">Create Post</button>
         </div>
         <div class="row">
             <div
@@ -20,15 +20,17 @@
                 v-for="post in postData"
                 :key="post.title"
             >
-                <stats-card>
-                    <div class="" slot="content">
-                        <p>{{ post.date }}</p>
-                        {{ post.title }}
-                    </div>
-                    <div class="stats" slot="footer">
-                        {{ post.description }}
-                    </div>
-                </stats-card>
+                <router-link :to="{ path: 'post/' +  post.id }">
+                    <stats-card>
+                        <div class="" slot="content">
+                            <p>{{ post.date }}</p>
+                            {{ post.title }}
+                        </div>
+                        <div class="stats" slot="footer">
+                            {{ post.description }}
+                        </div>
+                    </stats-card>
+                </router-link>
             </div>
         </div>
 

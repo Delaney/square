@@ -43,7 +43,7 @@ export default {
   props: {
     title: {
       type: String,
-      default: "Anti-misinformation"
+      default: "Blog"
     },
     backgroundColor: {
       type: String,

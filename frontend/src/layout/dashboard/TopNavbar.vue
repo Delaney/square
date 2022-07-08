@@ -1,7 +1,7 @@
 <template>
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">{{ routeName }}</a>
+            <a class="navbar-brand" href="/">{{ routeName }}</a>
 
             <button
                 class="navbar-toggler navbar-burger"
@@ -53,7 +53,6 @@ export default {
         routeName() {
             const { name } = this.$route;
             return "";
-            // return this.capitalizeFirstLetter(name);
         },
         isLoggedIn() {
             return this.$store.getters.isAuthenticated;
@@ -81,7 +80,7 @@ export default {
             this.$sidebar.displaySidebar(false);
         },
         async logout() {
-            await this.$store.dispatch("LogOut");
+            await this.$store.dispatch("logout");
             this.$router.push("/login");
         },
     },

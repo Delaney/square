@@ -1,7 +1,7 @@
 <template>
     <div class="login">
         <div>
-            <form @submit.prevent="submit">
+            <form @submit.prevent="submit" style="width: 500px; margin: 200px auto; border: black">
                 <div>
                     <label for="email">email:</label>
                     <input type="email" name="email" v-model="form.email" />
@@ -35,14 +35,18 @@ export default {
         };
     },
     methods: {
-        async submit() {
+        submit() {
             const user = new FormData();
             user.append("email", this.form.email);
             user.append("password", this.form.password);
             try {
-                await this.$store.dispatch("login", user);
-                this.$router.push("/posts");
-                this.showError = false;
+                this.$store.dispatch("login", user)
+                    .then(() => {
+                        setTimeout(() => {
+                            this.$router.push("/dashboard");
+                            this.showError = false;
+                        }, 1000);
+                    });
             } catch (error) {
                 this.showError = true;
             }

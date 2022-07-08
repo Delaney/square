@@ -11,17 +11,19 @@
             <div
                 class="col-md-6 col-xl-3"
                 v-for="post in postData"
-                :key="post.title"
+                :key="post.id"
             >
-                <stats-card>
-                    <div class="" slot="content">
-                        <p>{{ post.date }}</p>
-                        {{ post.title }}
-                    </div>
-                    <div class="stats" slot="footer">
-                        {{ post.description }}
-                    </div>
-                </stats-card>
+                <router-link :to="{ path: 'post/' +  post.id }">
+                    <stats-card>
+                        <div class="" slot="content">
+                            <p>{{ post.date }}</p>
+                            {{ post.title }}
+                        </div>
+                        <div class="stats" slot="footer">
+                            {{ post.description }}
+                        </div>
+                    </stats-card>
+                </router-link>
             </div>
         </div>
     </div>
@@ -102,7 +104,6 @@ export default {
         axios.get("http://localhost/api/posts")
             .then(response => response.data)
             .then(data => {
-                console.log(data.data)
                 this.posts = data.data;
             });
     },
