@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Models\Post;
 
@@ -34,29 +35,33 @@ class ImportOldPosts extends Command
             ->first();
 
         if (!$admin) {
-            $admin = User::create([
-                'name'  => 'Admin',
-                'username'  => 'username',
-                'email' => 'admin@system.com',
-                'password'  => ''
-            ]);
-
-            $client = new Client();
-            $request = $client->get('https://sq1-api-test.herokuapp.com/posts');
-            $response = $request->getBody()->getContents();
-            $response = json_decode($response);
-
-            foreach ($response->data as $post) {
-                $post = Post::create([
-                    'title' => $post->title,
-                    'description' => $post->description,
-                    'publication_date' => $post->publication_date,
-                    'user_id'   => $admin->id
+                $admin = User::create([
+                    'name'  => 'Admin',
+                    'username'  => 'admin',
+                    'email' => 'admin@system.com',
+                    'password'  => ''
                 ]);
-            }
 
-            $this->output->success(count($response->data) . " posts imported\n");
-            exit;
+                try {
+                    $client = new Client();
+                    $request = $client->get('https://sq1-api-test.herokuapp.com/posts');
+                    $response = $request->getBody()->getContents();
+                    $response = json_decode($response);
+        
+                    foreach ($response->data as $post) {
+                        $post = Post::create([
+                            'title' => $post->title,
+                            'description' => $post->description,
+                            'publication_date' => $post->publication_date,
+                            'user_id'   => $admin->id
+                        ]);
+                    }
+        
+                    $this->output->success(count($response->data) . " posts imported\n");
+                    exit;
+                } catch (\Exception $e) {
+                    throw $e;
+                };
         }
     }
 }
