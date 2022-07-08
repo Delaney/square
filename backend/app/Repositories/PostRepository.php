@@ -6,6 +6,7 @@ use App\Interfaces\PostRepositoryInterface;
 use Illuminate\Support\Facades\{
     Auth,
     Hash,
+    Redis,
     Validator
 };
 use App\Models\Post;
@@ -26,7 +27,16 @@ class PostRepository implements PostRepositoryInterface
 
     public function getPostById($id)
     {
-        return new PostResource(Post::findOrFail($id));
+        $cached_post = Redis::get('post_' . $id);
+
+        if ($cached_post) {
+            $post = json_decode($cached_post, FALSE);
+        } else {
+            $post = Post::findOrFail($id);
+            Redis::set('post_' . $id, $post);
+        }
+
+        return new PostResource($post);
     }
 
     public function create($request)
@@ -50,6 +60,8 @@ class PostRepository implements PostRepositoryInterface
             'user_id' => $user->id
         ]);
 
-        return new PostResource(Post::create($request->all()));
+        $post = Post::create($request->all());
+        Redis::set('post_' . $post->id, $post);
+        return new PostResource($post);
     }
 }
