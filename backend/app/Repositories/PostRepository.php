@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Repositories\BaseRepository;
 use App\Interfaces\PostRepositoryInterface;
 use Illuminate\Support\Facades\{
     Auth,
@@ -12,7 +13,7 @@ use Illuminate\Support\Facades\{
 use App\Models\Post;
 use App\Http\Resources\Post as PostResource;
 
-class PostRepository implements PostRepositoryInterface
+class PostRepository extends BaseRepository implements PostRepositoryInterface
 {
     public function getAllPosts($request)
     {

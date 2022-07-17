@@ -11,4 +11,5 @@ interface UserRepositoryInterface
     public function login(Request $request);
     public function getUserDetails(Request $request);
     public function getUserPosts(Request $request);
+    public function validate(Array $data, Array $validators);
 }
