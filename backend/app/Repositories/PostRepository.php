@@ -42,20 +42,6 @@ class PostRepository extends BaseRepository implements PostRepositoryInterface
 
     public function create($request)
     {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'title'        => 'required|string|max:100',
-                'description' => 'required|string|max:255'
-            ]
-        );
-
-        if ($validator->fails())
-            return response()->json([
-                'error' => 'invalid_input',
-                'message' => $validator->errors()->first()
-            ], 400);
-
         $user = $request->user();
         $request->merge([
             'user_id' => $user->id

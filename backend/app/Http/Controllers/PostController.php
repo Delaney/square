@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Interfaces\PostRepositoryInterface;
+use App\Validators\PostValidator;
 
 class PostController extends Controller
 {
@@ -27,6 +28,11 @@ class PostController extends Controller
 
     public function create(Request $request)
     {
+        $this->postRepository
+            ->validate($request->all(), [
+                PostValidator::class
+            ]);
+
         return $this->postRepository->create($request);
     }
 }
